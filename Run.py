@@ -3,7 +3,7 @@ import datetime
 from PyQt5 import QtWidgets
 from qimage2ndarray.dynqt import QtGui
 
-from mtcnn.detector import detect_faces, show_bboxes, get_face_expression, get_head_pose, get_emotion
+from mtcnn.detector import detect_faces, show_bboxes, get_face_expression, get_head_pose, get_emotion, get_face_state
 from MainWindow import Ui_MainWindow
 import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog
@@ -13,7 +13,7 @@ import qimage2ndarray
 from torch.autograd import *
 from detection import *
 import os
-os.environ["CUDA_VISIBLE_DEVICES"] = "1"
+# os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 from ssd_net_vgg import *
 from voc0712 import *
 import torch
@@ -57,7 +57,7 @@ class CameraShow(QMainWindow, Ui_MainWindow):
         self.net = SSD()
         self.net = torch.nn.DataParallel(self.net)
         self.net.train(mode=False)
-       
+        # net.load_state_dict(torch.load('./weights/ssd300_VOC_100000.pth',map_location=lambda storage,loc: storage))
         # self.net.load_state_dict(
         #     torch.load('./weights/final_20200226_VOC_100000.pth', map_location=lambda storage, loc: storage))
         self.net.load_state_dict(torch.load('./weights/final_20200226_VOC_100000.pth',map_location=lambda storage, loc: storage.cuda(0)))
@@ -222,7 +222,9 @@ class CameraShow(QMainWindow, Ui_MainWindow):
                 self.shake_fps_l=0 #摇头帧数
                 self.shake_fps_r = 0 # 摇头帧数
 
-
+                # 口罩检测时间
+                self.FaceMaskTime=time.time()
+                self.Facemasktemp=1
 
         else:
             self.Timer.stop()
@@ -288,6 +290,19 @@ class CameraShow(QMainWindow, Ui_MainWindow):
                 bounding_boxes, landmarks = detect_faces(self.img)
 
 
+                # 定时进行口罩检测
+
+                if time.time() -self.FaceMaskTime>self.Facemasktemp:
+                    self.Facemasktemp = 60
+                    if len(bounding_boxes)>0:
+                        self.FaceMaskTime = time.time()
+                        label=get_face_state(get_face_expression(self.img, bounding_boxes))
+                        if label=='nomask':
+                            self.Msg.setText("为了您的安全，请佩戴口罩！")
+
+                        else:
+                            self.Msg.setText("祝你旅途愉快！")
+
 
                 #通过MTCNN人脸框判断，当检测不到人脸时判断低头or瞌睡
                 if len(bounding_boxes) == 0:
@@ -301,7 +316,7 @@ class CameraShow(QMainWindow, Ui_MainWindow):
                 #通过头部姿态欧拉角角度变化判断是否摇头
                 if len(bounding_boxes) > 0:
                     Head_Y_X_Z = get_head_pose(landmarks)
-                    print('pitch:{}, yaw:{}, roll:{}'.format(Head_Y_X_Z[1], Head_Y_X_Z[2], Head_Y_X_Z[3]))
+                    # print('pitch:{}, yaw:{}, roll:{}'.format(Head_Y_X_Z[1], Head_Y_X_Z[2], Head_Y_X_Z[3]))
                     if(Head_Y_X_Z[2]<-0.75):
                         self.shake_fps_l+=1
                     if(Head_Y_X_Z[2]>=-0.75):
@@ -347,6 +362,7 @@ class CameraShow(QMainWindow, Ui_MainWindow):
                     self.Emotion.setText(Emotions[1])
                     self.Emotion_pred.display(float(Emotions[0]))
                     # print(Emotions)
+
                     canvas = cv2.imread('img_resource/label_pred.jpg', flags=cv2.IMREAD_UNCHANGED)
                     for (i, (emotion, prob)) in enumerate(zip(self.EMOTIONS, Emotions[2])):
                         # text = "{}: {:.2f}%".format(emotion, prob * 100)
@@ -543,7 +559,7 @@ class CameraShow(QMainWindow, Ui_MainWindow):
                 showImg = qimage2ndarray.array2qimage(showImg)
                 self.Camera_2.setPixmap(QPixmap(showImg))  # 展示图片
                 self.Camera_2.show()
-            if self.case ==3:
+            if self.case == 3:
                 img_copy = self.img.copy()
                 frag_gray = False
                 self.time_ing = time.time()
@@ -576,6 +592,24 @@ class CameraShow(QMainWindow, Ui_MainWindow):
                     self.frag_cap = False
                 bounding_boxes, landmarks = detect_faces(self.img)
 
+                # 定时进行口罩检测
+
+                if time.time() - self.FaceMaskTime > self.Facemasktemp:
+                    self.Facemasktemp = 60
+                    if len(bounding_boxes) > 0:
+                        label = get_face_state(get_face_expression(self.img, bounding_boxes))
+                        self.FaceMaskTime=time.time()
+                        if label == 'nomask':
+                            self.Msg.setText("为了您的安全，请佩戴口罩！")
+                        else:
+                            self.Msg.setText("祝你旅途愉快！")
+
+
+
+
+
+
+                # print(get_face_state(self.img, bounding_boxes))
                 # 通过MTCNN人脸框判断，当检测不到人脸时判断低头or瞌睡
                 if len(bounding_boxes) == 0:
                     self.nod_fps += 1
@@ -588,7 +622,7 @@ class CameraShow(QMainWindow, Ui_MainWindow):
                 # 通过头部姿态欧拉角角度变化判断是否摇头
                 if len(bounding_boxes) > 0:
                     Head_Y_X_Z = get_head_pose(landmarks)
-                    print('pitch:{}, yaw:{}, roll:{}'.format(Head_Y_X_Z[1], Head_Y_X_Z[2], Head_Y_X_Z[3]))
+                    # print('pitch:{}, yaw:{}, roll:{}'.format(Head_Y_X_Z[1], Head_Y_X_Z[2], Head_Y_X_Z[3]))
                     if (Head_Y_X_Z[2] < -0.75):
                         self.shake_fps_l += 1
                     if (Head_Y_X_Z[2] >= -0.75):
@@ -626,10 +660,12 @@ class CameraShow(QMainWindow, Ui_MainWindow):
                     self.shake_LCD.display(self.shake_freq)
 
                 if len(bounding_boxes) > 0:
+
                     Emotions = get_emotion(get_face_expression(self.img, bounding_boxes))
                     self.Emotion.setText(Emotions[1])
                     self.Emotion_pred.display(float(Emotions[0]))
                     # print(Emotions)
+                    # print(get_face_state(get_face_expression(self.img, bounding_boxes)))
                     canvas = cv2.imread('img_resource/label_pred.jpg', flags=cv2.IMREAD_UNCHANGED)
                     for (i, (emotion, prob)) in enumerate(zip(self.EMOTIONS, Emotions[2])):
                         # text = "{}: {:.2f}%".format(emotion, prob * 100)
@@ -744,7 +780,7 @@ class CameraShow(QMainWindow, Ui_MainWindow):
                     self.list_Y = np.delete(self.list_Y, 0)
                 else:
                     self.Msg.clear()
-                    self.Msg.setPlainText('Nothing detected.')
+                    # self.Msg.setPlainText('Nothing detected.')
 
                 # print(list)
                 # 实时计算PERCLOS
@@ -852,7 +888,7 @@ class CameraShow(QMainWindow, Ui_MainWindow):
                 self.blink_start = time.time()  # 眨眼时间
                 self.yawn_start = time.time()  # 打哈欠时间
                 self.danger_start = time.time()  # 吸烟or打电话时间
-                self.case = 2
+                self.case = 3
                 self.Timer.start(30)
                 self.time_first = time.time()
                 self.time_ing = time.time()
@@ -866,6 +902,10 @@ class CameraShow(QMainWindow, Ui_MainWindow):
                 self.shake_start = time.time()  # 摇头时间
                 self.shake_fps_l = 0  # 摇头帧数
                 self.shake_fps_r = 0  # 摇头帧数
+
+                # 口罩检测时间
+                self.FaceMaskTime = time.time()
+                self.Facemasktemp = 1
         else:
             self.Timer.stop()
             self.camera.release()

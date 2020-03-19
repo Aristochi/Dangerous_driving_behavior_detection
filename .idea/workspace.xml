@@ -14,6 +14,9 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="JsFlowSettings">
     <service-enabled>true</service-enabled>
     <exe-path />
@@ -21,12 +24,14 @@
     <auto-save>true</auto-save>
   </component>
   <component name="ProjectId" id="1Xb5hfMKmmJk4h1gRqJiLu8TA0L" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
@@ -34,17 +39,17 @@
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\PythonEye\DachuangV2.0" />
+      <recent name="E:\PythonEye\DachuangV2.0\mtcnn" />
+      <recent name="E:\PythonEye\DachuangProject\mtcnn" />
+      <recent name="E:\PythonEye\DachuangProject\test" />
+      <recent name="E:\PythonEye\DachuangProject\Emoji" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="E:\PythonEye\DachuangProject\Emoji" />
       <recent name="E:\PythonEye\DachuangProject" />
       <recent name="E:\PythonEye\DachuangProject\mtcnn" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="E:\PythonEye\DachuangProject\mtcnn" />
-      <recent name="E:\PythonEye\DachuangProject\test" />
-      <recent name="E:\PythonEye\DachuangProject\Emoji" />
-      <recent name="E:\PythonEye\DachuangProject\Yushiqi" />
-      <recent name="E:\PythonEye\DachuangProject" />
     </key>
   </component>
   <component name="RunManager" selected="Python.Run">
@@ -82,27 +87,6 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/CameraShow.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="OboardCamDisp" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="DachuangProject" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/OboardCamDisp.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -153,13 +137,34 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="test" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="DachuangProject" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Python.Run" />
         <item itemvalue="Python.detector" />
+        <item itemvalue="Python.test" />
         <item itemvalue="Python.CamShow" />
         <item itemvalue="Python.CameraShow" />
-        <item itemvalue="Python.OboardCamDisp" />
       </list>
     </recent_temporary>
   </component>
@@ -190,6 +195,10 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="447" y="221" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1536.824@0.0.1536.824" timestamp="1582985333743" />
+    <state x="499" y="162" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1584622217927">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="499" y="162" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1536.824@0.0.1536.824" timestamp="1584622217927" />
     <state x="93" y="93" width="1350" height="638" key="DiffContextDialog" timestamp="1583046534841">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -198,22 +207,22 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="549" y="170" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1582868073139" />
-    <state width="1515" height="203" key="GridCell.Tab.0.bottom" timestamp="1583571627711">
+    <state width="1515" height="203" key="GridCell.Tab.0.bottom" timestamp="1584623591439">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1515" height="203" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1583571627711" />
-    <state width="1515" height="203" key="GridCell.Tab.0.center" timestamp="1583571627711">
+    <state width="1515" height="203" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1584623591439" />
+    <state width="1515" height="203" key="GridCell.Tab.0.center" timestamp="1584623591439">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1515" height="203" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1583571627711" />
-    <state width="1515" height="203" key="GridCell.Tab.0.left" timestamp="1583571627711">
+    <state width="1515" height="203" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1584623591439" />
+    <state width="1515" height="203" key="GridCell.Tab.0.left" timestamp="1584623591439">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1515" height="203" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1583571627711" />
-    <state width="1515" height="203" key="GridCell.Tab.0.right" timestamp="1583571627711">
+    <state width="1515" height="203" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1584623591439" />
+    <state width="1515" height="203" key="GridCell.Tab.0.right" timestamp="1584623591439">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1515" height="203" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1583571627711" />
+    <state width="1515" height="203" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1584623591439" />
     <state width="1515" height="261" key="GridCell.Tab.1.bottom" timestamp="1583513042207">
       <screen x="0" y="0" width="1536" height="824" />
     </state>

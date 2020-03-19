@@ -4,6 +4,10 @@ import time
 
 import os
 import tensorflow as  tf
+from keras.applications.imagenet_utils import preprocess_input
+
+from Facemask.mobileNet import MobileNet
+
 gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.3)
 sess = tf.Session(config=tf.ConfigProto(gpu_options=gpu_options))
 from PIL import Image
@@ -256,6 +260,7 @@ def run_first_stage(image, net, scale, threshold):
         sw, sh = math.ceil(width * scale), math.ceil(height * scale)
         img = cv2.resize(image, (sw, sh))
         img = np.asarray(img, 'float32')
+
         img = Variable(torch.FloatTensor(_preprocess(img)), volatile=True)
         output = net(img)
         probs = output[1].data.numpy()[0, 1, :, :]
@@ -325,10 +330,10 @@ def detect_faces(image,
                                    bounding_boxes[:, 5:])
     bounding_boxes = convert_to_square(bounding_boxes)
     bounding_boxes[:, 0:4] = np.round(bounding_boxes[:, 0:4])
-
+    with torch.no_grad():
     # STAGE 2
-    img_boxes = get_image_boxes(bounding_boxes, image, size=24)
-    img_boxes = Variable(torch.FloatTensor(img_boxes), volatile=True)
+        img_boxes = get_image_boxes(bounding_boxes, image, size=24)
+        img_boxes = Variable(torch.FloatTensor(img_boxes), volatile=True)
     output = rnet(img_boxes)
     offsets = output[0].data.numpy()  # shape [n_boxes, 4]
     probs = output[1].data.numpy()  # shape [n_boxes, 2]
@@ -348,7 +353,8 @@ def detect_faces(image,
     img_boxes = get_image_boxes(bounding_boxes, image, size=48)
     if len(img_boxes) == 0:
         return [], []
-    img_boxes = Variable(torch.FloatTensor(img_boxes), volatile=True)
+    with torch.no_grad():
+        img_boxes = Variable(torch.FloatTensor(img_boxes), volatile=True)
     output = onet(img_boxes)
     landmarks = output[0].data.numpy()  # shape [n_boxes, 10]
     offsets = output[1].data.numpy()  # shape [n_boxes, 4]
@@ -563,7 +569,7 @@ def get_face_expression(img, bounding_box):
         cropped = draw[point[1]:point[3], point[0]:point[2]]
         # cv2.imshow('0', cropped)
         return cropped
-emotion_model_path = '_mini_XCEPTION.102-0.66.hdf5'
+emotion_model_path = 'emotion.hdf5'
 emotion_classifier = load_model(emotion_model_path, compile=False)
 EMOTIONS = ["生气", "厌恶", "害怕", "喜悦", "悲伤", "惊讶", "普通"]
 def get_emotion(img):
@@ -587,12 +593,34 @@ def get_emotion(img):
 
     return emotion_probability, label,preds
 
+Crop_HEIGHT = 128
+Crop_WIDTH = 128
+NUM_CLASSES = 2
+mask_model = MobileNet(input_shape=[Crop_HEIGHT, Crop_WIDTH, 3], classes=NUM_CLASSES)
+mask_model.load_weights("facemask.h5")
+class_names=['mask','nomask']
+def get_face_state(img):
+    if len(img) > 0:
+    # 归一化
+        img=cv2.resize(img,(128,128))
+        img = preprocess_input(np.reshape(np.array(img, np.float64), [1, Crop_HEIGHT, Crop_WIDTH, 3]))
+        label=mask_model.predict(img)
+        # print('inputnum')
+        num=np.argmax(label)
+        # print(num)
+        classes = class_names[int(num)]
+        # print(int(num))
+        return classes
+    else:
+        return "正在识别···"
+
 if __name__ == '__main__':
     import cv2
 
-    path = ('E:\PythonEye\Dataset/3-FemaleGlasses.mp4')
-    # cap = cv2.VideoCapture(path)
-    cap = cv2.VideoCapture(0)
+    # path = ('E:\PythonEye\Dataset/3-FemaleGlasses.mp4')
+    path = ('test\\1.mp4')
+    cap = cv2.VideoCapture(path)
+    # cap = cv2.VideoCapture(0)
     while True:
         start = time.time()
         ret, img = cap.read()
@@ -606,7 +634,8 @@ if __name__ == '__main__':
         # img2=get_face_expression(img, bounding_boxes)
         # cv2.imshow('s',img2)
         # print(get_emotion(img2))
-        print(get_head_pose(landmarks))
+        # print(get_head_pose(landmarks))
+        # print(get_face_state(get_face_expression(img, bounding_boxes)))
         T = time.time() - start
         fps = 1 / T  # 实时在视频上显示fps
 
