@@ -14,7 +14,7 @@
 
 主要文件说明： ssd_net_vgg.py 定义class SSD的文件 Train.py 训练代码 voc0712.py 数据集处理代码（没有改文件名，改的话还要改其他代码） loss_function.py 损失函数 detection.py 检测结果的处理代码，将SSD返回结果处理为opencv可以处理的形式 test.py 单张图片测试代码 Ps:没写参数接口，所以要改测试的图片就要手动改代码内部文件名了 l2norm.py l2正则化 Config.py 配置参数 utils.py 工具类 camera_detection.py 摄像头检测代码V1,V2 augmentations.py 生成识别框 Run.py 主程序运行文件 MainWindow.py UI界面布局 /Emoji 人脸情绪识别部分 /mtcnn 人脸定位检测 /test 测试视频、图片素材 /Facemask口罩检测相关结构
 
-数据集结构（没有给出，需要的话咨询btzheng1018@qq.com或者aristochi@qq.com）： /dataset: /Annotations 存放含有目标信息的xml文件 /ImageSets/Main 存放图片名的文件 /JPEGImages 存放图片 /txt.py 生成ImageSets文件的代码
+数据集结构： /dataset: /Annotations 存放含有目标信息的xml文件 /ImageSets/Main 存放图片名的文件 /JPEGImages 存放图片 /txt.py 生成ImageSets文件的代码
 
 权重文件存放路径： /weights
 
