@@ -17,6 +17,9 @@
 数据集结构： /dataset: /Annotations 存放含有目标信息的xml文件 /ImageSets/Main 存放图片名的文件 /JPEGImages 存放图片 /txt.py 生成ImageSets文件的代码
 
 权重文件存放路径： /weights
-
+数据集
+链接：https://pan.baidu.com/s/17OT61-ZOgCTuceDBJa36eA 
+提取码：2l7e 
+复制这段内容后打开百度网盘手机App，操作更方便哦
 带训练和测试代码版本请看https://github.com/DohaerisT/DangerousDrivingDetector
 参考资料： https://blog.csdn.net/zxd52csx/article/details/82795104
